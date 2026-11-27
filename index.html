@@ -464,7 +464,7 @@ function place(w,x,y,width,h){const dw=desk.clientWidth, mobile=dw<=720;
   if(width) w.style.width=Math.min(width,dw-16)+'px'; if(h&&!mobile) w.style.height=h+'px';
   if(x<0) x=dw+x; x=Math.max(8,Math.min(x,dw-Math.min(width||300,dw)-8));
   if(mobile) y=(+w.dataset.my||60);
-  else if(w.dataset.br){x=Math.max(8,dw-w.offsetWidth-24);y=dockLine()-w.offsetHeight-14}
+  else if(w.dataset.br){x=24;y=dockLine()-w.offsetHeight-14}
   w.style.left=x+'px'; w.style.top=Math.max(8,y)+'px';fit(w);}
 /* keep windows clear of the dock: bottom edge always above it */
 const dockEl=document.getElementById('dock');
