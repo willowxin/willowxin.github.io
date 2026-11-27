@@ -43,7 +43,8 @@ button{font:inherit;color:inherit;cursor:default;background:none;border:0;paddin
 
 /* desktop + flowing artwork */
 #desk{position:fixed;inset:0;top:calc(42px + env(safe-area-inset-top,0px));bottom:0;overflow:hidden}
-.art{position:absolute;left:50%;bottom:calc(80px + env(safe-area-inset-bottom,0px));height:calc(100% - 80px - env(safe-area-inset-bottom,0px));aspect-ratio:1464/1100;max-width:100%;transform:translateX(-50%);pointer-events:none}
+.art{position:absolute;left:50%;bottom:calc(80px + env(safe-area-inset-bottom,0px));height:calc((100% - 80px - env(safe-area-inset-bottom,0px)) * var(--artz,1));aspect-ratio:1464/1100;max-width:100%;transform:translateX(-50%);pointer-events:none}
+@media (min-width:721px){.art{--artz:1.16;max-width:none}}
 .art canvas,.art img{width:100%;height:100%;display:block}
 .art img.echo{position:absolute;inset:0;filter:blur(1.2px) saturate(.6);opacity:0;-webkit-mask-image:linear-gradient(to bottom,transparent 50%,#000 88%);mask-image:linear-gradient(to bottom,transparent 50%,#000 88%);animation:echo 3s 3.5s ease forwards}
 .art img.e1{transform:translate(-6px,22px);--o:.06}.art img.e2{transform:translate(8px,44px);--o:.035}
@@ -466,11 +467,12 @@ function place(w,x,y,width,h){const dw=desk.clientWidth, mobile=dw<=720;
   w.style.left=x+'px'; w.style.top=Math.max(8,y)+'px';fit(w);}
 /* keep windows clear of the dock: bottom edge always above it */
 const dockEl=document.getElementById('dock');
-function dockLine(){return dockEl.getBoundingClientRect().top-desk.getBoundingClientRect().top-10}
+function dockLine(){return dockEl.getBoundingClientRect().top-desk.getBoundingClientRect().top-6}
+function menuLine(){return Math.max(8,document.getElementById('menubar').getBoundingClientRect().bottom-desk.getBoundingClientRect().top+2)}
 function bdr(w){const c=getComputedStyle(w);return parseFloat(c.borderTopWidth)+parseFloat(c.borderBottomWidth)}
 function fit(w){if(w.hidden||w.classList.contains('max'))return;const mb=dockLine();let t=w.offsetTop;
   if(t+w.offsetHeight>mb)t=Math.max(14,mb-w.offsetHeight);w.style.top=t+'px';w.style.maxHeight=(mb-t-bdr(w))+'px';}
-addEventListener('resize',()=>document.querySelectorAll('#desk > .win').forEach(w=>{fit(w);if(w._bkfit)w._bkfit()}));
+addEventListener('resize',()=>document.querySelectorAll('#desk > .win').forEach(w=>{if(w._book&&!w.hidden&&!w.classList.contains('max')){centerWin(w);return}fit(w);if(w._bkfit)w._bkfit()}));
 function focus(w){Object.values(wins).forEach(o=>o.el.classList.remove('active'));w.style.zIndex=++z;w.classList.add('active');sync();}
 function show(w){const was=w.hidden;w.hidden=false;if(was){w.classList.remove('pop');void w.offsetWidth;w.classList.add('pop');}fit(w);focus(w);}
 function hide(w){w.hidden=true;w.classList.remove('active');sync();}
@@ -559,6 +561,7 @@ function makeBook(host,p){const B=p.book,N=B.n/2,rtl=!!B.rtl;let k=0,busy=0;
   wins[id].closed=false;show(w);
   if(w._center&&!w.classList.contains('max'))centerWin(w);}
 function centerWin(w){const dw=desk.clientWidth,mb=dockLine(),T=14;
+  if(dw>720&&w._book){const B=bdr(w),M=menuLine();w.style.width=(dw-16-B)+'px';w.style.height=(mb-M-B)+'px';w.style.maxHeight=(mb-M-B)+'px';w.style.left='8px';w.style.top=M+'px';if(w._bkfit)w._bkfit();return;}
   if(dw>720){w.style.maxHeight='none';w.style.height=((w._book?mb-T:Math.min(640,mb-T))-bdr(w))+'px';w.style.width=Math.min(w._book?1100:880,dw-32)+'px';}
   w.style.left=Math.max(8,(dw-w.offsetWidth)/2)+'px';w.style.top=Math.max(T,T+(mb-T-w.offsetHeight)/2)+'px';fit(w);
   if(w._book&&w._bkfit)w._bkfit();}
