@@ -44,7 +44,7 @@ button{font:inherit;color:inherit;cursor:default;background:none;border:0;paddin
 /* desktop + flowing artwork */
 #desk{position:fixed;inset:0;top:calc(42px + env(safe-area-inset-top,0px));bottom:0;overflow:hidden}
 .art{position:absolute;left:50%;bottom:calc(80px + env(safe-area-inset-bottom,0px));height:calc((100% - 80px - env(safe-area-inset-bottom,0px)) * var(--artz,1));aspect-ratio:1464/1100;max-width:100%;transform:translateX(-50%);pointer-events:none}
-@media (min-width:721px){.art{--artz:1.16;max-width:none}}
+@media (min-width:721px){.art{height:calc(100% - 80px - env(safe-area-inset-bottom,0px) + 42px + env(safe-area-inset-top,0px));max-width:none}#desk{overflow:visible}}
 .art canvas,.art img{width:100%;height:100%;display:block}
 .art img.echo{position:absolute;inset:0;filter:blur(1.2px) saturate(.6);opacity:0;-webkit-mask-image:linear-gradient(to bottom,transparent 50%,#000 88%);mask-image:linear-gradient(to bottom,transparent 50%,#000 88%);animation:echo 3s 3.5s ease forwards}
 .art img.e1{transform:translate(-6px,22px);--o:.06}.art img.e2{transform:translate(8px,44px);--o:.035}
@@ -659,11 +659,11 @@ function startSand(){
   desk.insertBefore(cv,desk.firstChild);const ctx=cv.getContext('2d');
   const pl=document.createElement('canvas'),plx=pl.getContext('2d');let layer,buf,CW,CH;
   const gc=document.createElement('canvas'),gx2=gc.getContext('2d'),mc=document.createElement('canvas'),mcx=mc.getContext('2d'),GS=8;let gw2,gh2,DF,mid;
-  function size(){CW=cv.width=desk.clientWidth;CH=cv.height=desk.clientHeight;pl.width=CW;pl.height=CH;layer=plx.createImageData(CW,CH);buf=new Uint32Array(layer.data.buffer);
+  function size(){const T=Math.max(0,desk.getBoundingClientRect().top);cv.style.top=-T+'px';cv.style.height='calc(100% + '+T+'px)';CW=cv.width=desk.clientWidth;CH=cv.height=desk.clientHeight+T;pl.width=CW;pl.height=CH;layer=plx.createImageData(CW,CH);buf=new Uint32Array(layer.data.buffer);
     gc.width=CW;gc.height=CH;gw2=Math.ceil(CW/GS)+1;gh2=Math.ceil(CH/GS)+1;DF=new Float32Array(gw2*gh2);mc.width=gw2;mc.height=gh2;mid=mcx.createImageData(gw2,gh2)}
   size();addEventListener('resize',size);
   img.className='shade';const PI=new Int32Array(N),AL=new Uint8Array(N),SH=little?((120<<16)|(124<<8)|130)>>>0:((130<<24)|(124<<16)|(120<<8))>>>0;
-  let mx=-1e4,my=-1e4,mvx=0,mvy=0,lx=null,ly=null;const dr=desk.getBoundingClientRect.bind(desk);
+  let mx=-1e4,my=-1e4,mvx=0,mvy=0,lx=null,ly=null;const dr=cv.getBoundingClientRect.bind(cv);
   addEventListener('pointermove',e=>{const r=dr(),x=e.clientX-r.left,y=e.clientY-r.top;
     if(lx!==null){mvx+=(x-lx);mvy+=(y-ly)}lx=x;ly=y;mx=x;my=y});
   addEventListener('pointerleave',()=>{mx=my=-1e4});
