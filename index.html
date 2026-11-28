@@ -600,7 +600,7 @@ function makeBook(host,p){const B=p.book,N=B.n/2,rtl=!!B.rtl;let k=0,busy=0;
   if(w._center&&!w.classList.contains('max'))centerWin(w);}
 function centerWin(w){const dw=desk.clientWidth,mb=dockLine(),T=14;
   if(dw>720&&w._book){const B=bdr(w),M=menuLine();w.style.width=(dw-16-B)+'px';w.style.height=(mb-M-B)+'px';w.style.maxHeight=(mb-M-B)+'px';w.style.left='8px';w.style.top=M+'px';if(w._bkfit)w._bkfit();return;}
-  if(dw>720&&!w._book){const M=menuLine(),PZ=0.75,B=bdr(w),H=Math.round(Math.min(mb-M,Math.max(640,(mb-M)*0.85))),W=Math.round((dw-16)*PZ);w.style.maxHeight='none';w.style.height=(H-B)+'px';w.style.width=(W-B)+'px';w.style.left=Math.round((dw-W)/2)+'px';w.style.top=Math.round(M+(mb-M-H)/2)+'px';fit(w);return;}
+  if(dw>720&&!w._book){const M=menuLine(),PZ=0.6375,B=bdr(w),H=Math.round(Math.min(mb-M,Math.max(640,(mb-M)*0.85))),W=Math.round((dw-16)*PZ);w.style.maxHeight='none';w.style.height=(H-B)+'px';w.style.width=(W-B)+'px';w.style.left=Math.round((dw-W)/2)+'px';w.style.top=Math.round(M+(mb-M-H)/2)+'px';fit(w);return;}
   if(dw>720){w.style.maxHeight='none';w.style.height=((w._book?mb-T:Math.min(640,mb-T))-bdr(w))+'px';w.style.width=Math.min(w._book?1100:880,dw-32)+'px';}
   w.style.left=Math.max(8,(dw-w.offsetWidth)/2)+'px';w.style.top=Math.max(T,T+(mb-T-w.offsetHeight)/2)+'px';fit(w);
   if(w._book&&w._bkfit)w._bkfit();}
