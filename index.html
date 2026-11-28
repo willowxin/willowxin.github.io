@@ -576,7 +576,7 @@ function openProject(p){const id='w-proj-'+p.id;let w=document.getElementById(id
       if(p.series)w.querySelectorAll('.series figcaption').forEach((fc,i)=>{const x=p.series[i],X=lang==='ja'&&x.ja?x.ja:x;fc.lang=lang;fc.innerHTML=X.d?`<b>${X.t}</b><span>${X.d}</span>`:(X.t||'');fc.hidden=!X.t&&!X.d});
       info.lang=lang;info.querySelector('.tr').onclick=()=>{lang=lang==='en'?'ja':'en';draw()}};
     draw();if(p.book)makeBook(w.querySelector('.bkhost'),p);
-    else{const ims=[...w.querySelectorAll('.ql > img, .series img')],L=ims.map(im=>({src:im.getAttribute('src'),t:p.t}));ims.forEach((im,i)=>{im.style.cursor='zoom-in';im.onclick=()=>openGallery(L,i)})}
+    else{const ser=[...w.querySelectorAll('.series img')],ims=ser.length?ser:[...w.querySelectorAll('.ql > img')],L=ims.map(im=>({src:im.getAttribute('src'),t:p.t}));ims.forEach((im,i)=>{im.style.cursor='zoom-in';im.onclick=()=>openGallery(L,i)})}
     desk.appendChild(w);setup(w);const n=document.querySelectorAll('[id^="w-proj-"]').length;place(w,180+(n%5)*30,60+(n%5)*28,p.book?1100:880,p.book?2000:640);w._center=true;w._book=!!p.book;}
 /* book viewer: real page turning, English translation under each page */
 function makeBook(host,p){const B=p.book,N=B.n/2,rtl=!!B.rtl;let k=0,busy=0;
