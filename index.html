@@ -149,7 +149,7 @@ p{margin:0 0 10px;max-width:62ch}
 .nlist b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nlist span{font-size:11px;color:var(--ink-2)}
 .ndoc{padding:22px 26px;overflow:auto;background:rgba(255,255,255,.55)}
-.lph{columns:2;column-gap:10px;margin-top:16px}.lph img{width:100%;display:block;margin:0 0 10px;break-inside:avoid;border-radius:4px;box-shadow:0 0 0 .5px var(--line-strong),0 3px 10px rgba(0,0,0,.08)}
+.lph{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;margin-top:16px}.lph img{width:100%;display:block;margin:0;border-radius:4px;box-shadow:0 0 0 .5px var(--line-strong),0 3px 10px rgba(0,0,0,.08)}
 .ndoc time{display:block;text-align:center;font-size:11px;color:var(--ink-3);margin-bottom:14px}
 .photo{aspect-ratio:4/3;max-width:100%;border-radius:8px;margin:12px 0;display:grid;place-items:center;color:var(--ink-3);font-size:12px;background:repeating-linear-gradient(-45deg,var(--bg) 0 10px,var(--bg-deep) 10px 20px)}
 
@@ -477,7 +477,7 @@ const PROJECTS = [
 ];
 const NOTES = [
   {d:'', t:'Cats and Dogs', b:'I once had two dogs and a cat. Their names were Michael, Cheese, and Oreo.\n\nYou probably wouldn\'t believe it, but for a brief period of time, I was almost living the life I had always dreamed of.\n\nI\'m forever grateful for all the joy they brought into my life, even though our time together was limited. But at the same time, I carry a sense of guilt.\n\n"If you cannot commit to being there for an animal for its entire lifetime, don\'t bring one into your life."\n\nThat\'s the advice I\'d give to anyone thinking about getting a pet.', imgs:['l1','l2','l3','l4','l5']},
-  {d:'', t:'Alcohol', b:'My body reacts like this every single time I drink.\n\nYet, somehow, I kept drinking.\n\nNot addicted to alcohol, just addicted to the beauty and atmosphere surrounding it.', imgs:['a1','a2','a3','a4','a5','a6']}
+  {d:'', t:'Alcohol', b:'My body reacts like this every single time I drink.\n\nYet, somehow, I kept drinking.\n\nNot addicted to alcohol, just addicted to the beauty and atmosphere surrounding it.', imgs:['a1','a2','a3','a4','a5','a6'], end:'But I think it\'s time to stop. There is beauty everywhere.'}
 ];
 const desk=document.getElementById('desk'), wins={}; let z=10;
 
@@ -594,7 +594,7 @@ function centerWin(w){const dw=desk.clientWidth,mb=dockLine(),T=14;
 /* ---------- life ---------- */
 const nl=document.getElementById('nlist'),nd=document.getElementById('ndoc');
 function showNote(i){nl.querySelectorAll('button').forEach((b,j)=>b.setAttribute('aria-pressed',i===j));const n=NOTES[i];
-  nd.innerHTML=`${n.d?`<time>${n.d}</time>`:''}<h2>${n.t}</h2><p class="muted">${n.b.replace(/\n/g,'<br>')}</p>${n.imgs?'<div class="lph">'+n.imgs.map(k=>`<img src="${BIG[k]}" alt="" loading="lazy">`).join('')+'</div>':'<div class="photo">photo</div>'}`;}
+  nd.innerHTML=`${n.d?`<time>${n.d}</time>`:''}<h2>${n.t}</h2><p class="muted">${n.b.replace(/\n/g,'<br>')}</p>${n.imgs?'<div class="lph">'+n.imgs.map(k=>`<img src="${BIG[k]}" alt="" loading="lazy">`).join('')+'</div>':'<div class="photo">photo</div>'}${n.end?`<p class="muted" style="margin-top:16px">${n.end.replace(/\n/g,'<br>')}</p>`:''}`;}
 NOTES.forEach((n,i)=>{const b=document.createElement('button');b.innerHTML=`<b>${n.t.replace('Sample: ','')}</b>${n.d?`<span>${n.d}</span>`:''}`;b.onclick=()=>showNote(i);nl.appendChild(b)});
 showNote(0);
 
